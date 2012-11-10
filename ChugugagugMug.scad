@@ -1,29 +1,13 @@
+use <helpers/pivot.scad>
+use <helpers/tube.scad>
+use <helpers/cup.scad>
+
 $fn = 100;
 
-module bottomCup() {
-	offsetFromCenter = 20;
-	postHeight = 10;
-
-	union() {
-		difference() {
-			cylinder(r = 34, h = 30);
-			translate([0, 0, 2]) {
-				cylinder(r = 32, h = 30);
-			}
-		}
-
-		translate([-offsetFromCenter, 0, 0]) {
-			cylinder(r = 5, h = postHeight, $fn = 25);
-		}
-		translate([offsetFromCenter, 0, 0]) {
-			cylinder(r = 5, h = postHeight, $fn = 25);
-		}
-		translate([0, offsetFromCenter, 0]) {
-			cylinder(r = 5, h = postHeight, $fn = 25);
-		}
-		translate([0, -offsetFromCenter, 0]) {
-			cylinder(r = 5, h = postHeight, $fn = 25);
-		}
+module saucer(radius, height, wall, supports, supportRadius, supportHeight) {
+	cup(radius, height, wall);
+	pivot(supports, radius / 1.5) {
+		cylinder(r = supportRadius, h = supportHeight, $fn = 25);
 	}
 }
 
@@ -43,10 +27,7 @@ module topCup() {
 					}
 				}
 			}
-			cylinder(r = 31, h = 22);
-		}
-		translate([0, 0, 2]) {
-			cylinder(r = 29, h = 30);
+			cup(29, 22, 2);
 		}
 		translate([0, 0, -5]) {
 			cylinder(r = 5, h = 10);
@@ -54,7 +35,8 @@ module topCup() {
 	}
 }
 
-// bottomCup();
+
+// saucer(32, 30, 2, 4, 5, 10);
 
 translate([0, 0, 10]) {
 	color("red") topCup();
