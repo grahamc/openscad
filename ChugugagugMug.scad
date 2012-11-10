@@ -1,6 +1,7 @@
 use <helpers/pivot.scad>
 use <helpers/tube.scad>
 use <helpers/cup.scad>
+use <helpers/bevel.scad>
 
 $fn = 100;
 
@@ -11,33 +12,42 @@ module saucer(radius, height, wall, supports, supportRadius, supportHeight) {
 	}
 }
 
-module topCup() {
+module topCup(topRadius, topHeight, lowerRadius, lowerHeight, wall, ) {
 	difference() {
 		union() {
-			translate([0, 0, 20]) {
-				difference() {
-					union() {
-						translate([0, 0, 2]) {
-							cylinder(r = 34, h = 60);
-						}
-						cylinder(r1 = 31, r2 = 34, h = 2);
-					}
-					translate([0, 0, 2]) {
-						cylinder(r = 32, h = 62);
-					}
-				}
+			// Create a beveled tube
+			translate([0, 0, 22]) {
+				tube(topRadius, topHeight, wall);
 			}
-			cup(29, 22, 2);
+			translate([0, 0, 20]) {
+				bevel_tube(lowerRadius + wall, topRadius + wall, wall);
+			}
+
+			// Tuck a little cup at the bottom
+			cup(lowerRadius, 22, wall);
 		}
+
+		// Poke a hole for drainage
 		translate([0, 0, -5]) {
 			cylinder(r = 5, h = 10);
 		}
 	}
 }
 
+wall = 2;
 
-// saucer(32, 30, 2, 4, 5, 10);
+saucerInnerRadius = 32;
+saucerInnerHeight = 30;
+saucerSupportHeight = 10;
+
+// saucer(saucerInnerRadius, saucerInnerHeight, wall, 4, 5, saucerSupportHeight);
+
+
+potLowerInnerRadius = saucerInnerRadius - 3;
+potUpperInnerRadius = saucerInnerRadius;
+potUpperHeight = 60;
+potLowerHeight = saucerInnerHeight - saucerSupportHeight;
 
 translate([0, 0, 10]) {
-	color("red") topCup();
+	color("red") topCup(potUpperInnerRadius, potUpperHeight, potLowerInnerRadius, potLowerHight, wall);
 }
