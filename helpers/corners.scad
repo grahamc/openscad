@@ -46,25 +46,20 @@ module rounded_corner(wall, radius, height, corners = [0, 1, 0, 0]) {
 
 
 			// Remove the artifact between the top right and top left
-			if (!corners[0] && !corners[1]) {
+			if (!corners[0] && !corners[1])
 				_rounded_corner_artifact(outer_bound, subtract_height, [0, 1]);
-			}
+			
 			// Remove the artifact between the top right and bottom right
-			if (!corners[1] && !corners[2]) {
+			if (!corners[1] && !corners[2])
 				_rounded_corner_artifact(outer_bound, subtract_height, [1, 0]);
-			}
-			// Remove the artifact between the bottom right and bottom left
-			if (!corners[2] && !corners[3]) {
-				_rounded_corner_artifact(outer_bound, subtract_height, [0, -1]);
-			}
-			// Remove the artifact between the bottom left and top left
-			if (!corners[3] && !corners[0]) {
-				_rounded_corner_artifact(outer_bound, subtract_height, [-1, 0]);
-			}
 
-			translate ([0 - wall, 0 - radius - wall]) {
-			//	cube([diameter, diameter, subtract_height]);
-			}
+			// Remove the artifact between the bottom right and bottom left
+			if (!corners[2] && !corners[3])
+				_rounded_corner_artifact(outer_bound, subtract_height, [0, -1]);
+
+			// Remove the artifact between the bottom left and top left
+			if (!corners[3] && !corners[0])
+				_rounded_corner_artifact(outer_bound, subtract_height, [-1, 0]);
 		}
 	}
 }
